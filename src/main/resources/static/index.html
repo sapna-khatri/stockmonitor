@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        .stock {
+            border: 1px solid black;
+            margin: 10px 0;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Stock Market Monitor</h1>
+    <button onclick="simulatePriceChange()">Simulate Price Change</button>
+    <div id="stocks"></div>
+
+    <script>
+        function simulatePriceChange() {
+            fetch("/simulatePriceChange")
+            .then(response => response.json())
+            .then(data => {
+                let stocksDiv = document.getElementById("stocks");
+                stocksDiv.innerHTML = "";  // Clear existing data
+                for(let stock of data) {
+                    let stockDiv = document.createElement("div");
+                    stockDiv.className = "stock";
+                    stockDiv.innerHTML = `
+                        <span>${stock.name}</span>
+                        <span>$${stock.price.toFixed(2)}</span>
+                    `;
+                    stocksDiv.appendChild(stockDiv);
+                }
+            });
+        }
+
+        // Load initial data
+        simulatePriceChange();
+    </script>
+</body>
+</html>
